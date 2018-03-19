@@ -8,16 +8,16 @@ main:
 BL  _prompt
 BL  _scanfint
 MOV R4, R0
-BL  _scanfchar            @ branch to scanf procedure with return
+BL  _scanfchar
 MOV R5, R0
 BL  _scanfint
 MOV R6, R0
 MOV R1, R4
 MOV R2, R6
 BL  _command
-MOV R1, R0              @ copy return value to R1
-BL  _printf             @ print value stored in R1
-B   main                @ loop to main procedure with no return
+MOV R1, R0
+BL  _printf
+B   main
 
 
 
