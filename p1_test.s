@@ -1,9 +1,3 @@
-//
-//  p1_test.s
-//  
-//
-//  Created by Siyu Xiu on 3.17.18.
-//
 
 
 .global main
