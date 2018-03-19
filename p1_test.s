@@ -1,5 +1,6 @@
 
 
+
 .global main
 .func main
 
@@ -100,7 +101,7 @@ MOV PC, LR              @ return
 _prompt:
 MOV R7, #4              @ write syscall, 4
 MOV R0, #1              @ output stream to monitor, 1
-MOV R2, #96             @ print string length
+MOV R2, #105            @ print string length
 LDR R1, =prompt_str     @ string at label prompt_str:
 SWI 0                   @ execute syscall
 MOV PC, LR              @ return
@@ -109,7 +110,7 @@ MOV PC, LR              @ return
 
 .data
 read_char   :      .ascii      " "
-prompt_str:        .asciz      "Please follow: \n <OPERAND_1><ENTER>\n<OPERATION_CODE><ENTER>\n<OPERAND_2><ENTER>\n type <1@1><ENTER> to exit\n"
+prompt_str:        .asciz      "Please follow: \n<OPERAND_1><ENTER>\n<OPERATION_CODE><ENTER>\n<OPERAND_2><ENTER>\n type <1@1><ENTER> to exit\n"
 
 
 printf_str  :      .asciz      "%d\n"
