@@ -2,7 +2,6 @@
 //  p1_test.s
 //  
 //
-//  Created by Siyu Xiu on 3/17/18.
 //  Created by Siyu Xiu on 3.17.18.
 //
 
@@ -87,7 +86,6 @@ LDR R0, [R1]            @ move the character to the return register
 AND R0, #0xFF           @ mask out all but the lowest 8 bits
 MOV PC, LR              @ return
 
-_scanfint:     
 _scanfint:
 PUSH {LR}               @ store LR since scanf call overwrites
 SUB SP, SP, #4          @ make room on stack
@@ -117,7 +115,6 @@ MOV PC, LR              @ return
 
 .data
 read_char   :      .ascii      " "
-prompt_str:        .asciz      "Please follow: \n <OPERAND_1><ENTER>\n<OPERATION_CODE><ENTER>\n<OPERAND_2><ENTER>\n type <1@1><ENTER> to exit\
 prompt_str:        .asciz      "Please follow: \n <OPERAND_1><ENTER>\n<OPERATION_CODE><ENTER>\n<OPERAND_2><ENTER>\n type <1@1><ENTER> to exit\n"
 
 
