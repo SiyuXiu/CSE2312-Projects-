@@ -92,7 +92,7 @@ _compareprint:
  _exit:
    MOV R7, #4                @ write syscall, 4
    MOV R0, #1                @ output stream to monitor, 1
-   MOV R2, #21               @ print string length
+   MOV R2, #24               @ print string length
    LDR R1, =exit_str         @ string at label exit_str:
    SWI 0                     @ execute syscall
    MOV R7, #1                @ terminate syscall, 1
@@ -144,4 +144,4 @@ a:              .skip       40
 printf_str:     .asciz      "a[%d] = %d\n"
 print_min:      .asciz      "MINIMUM VALUE = %d\n"
 print_max:      .asciz      "MAXIMUM VALUE = %d\n"
-exit_str:       .ascii      " Program is terminating.\n"
+exit_str:       .ascii      "Program is terminating.\n"
