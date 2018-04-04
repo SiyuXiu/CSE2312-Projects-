@@ -17,7 +17,7 @@ MOV R9, R0                @ store m in R9
 
 MOV R1, R8                         @ pass n to partition procedure
 MOV R2, R9                        @ pass m to partition procedure
-BL _partitions                    @ branch to count_partitions prodecure with return
+BL count_partitions                    @ branch to count_partitions prodecure with return
 
 MOV R1, R0                @ pass result to printf procedure
 MOV R2, R8                @ pass n to printf procedure
