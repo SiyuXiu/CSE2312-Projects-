@@ -57,8 +57,7 @@ BL count_partitions                @ compute count_partitions(n,m-1)
 POP {R10}
 
 
-ADD R10, R10, R0                   @ let R10=count_partitions(n-m,m) + count_partitions(n,m-1)
-MOV R0, R10                        @ move R10 to R0
+ADD R0, R10, R0                   @ let R0=count_partitions(n-m,m) + count_partitions(n,m-1)
 POP {PC}                           @ restore the stack pointer and return
 
 
