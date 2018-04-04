@@ -49,14 +49,10 @@ BL count_partitions                @ compute count_partitions(n-m,m)
 MOV R10, R0                        @ store the result in R10
 POP {R2}                           @ restore the input argument(m)
 POP {R1}                           @ restore the input argument(n)
-
-
 PUSH {R10}
 SUB R2, R2, #1                     @ let n=n, m=(m-1)
 BL count_partitions                @ compute count_partitions(n,m-1)
 POP {R10}
-
-
 ADD R0, R10, R0                   @ let R0=count_partitions(n-m,m) + count_partitions(n,m-1)
 POP {PC}                           @ restore the stack pointer and return
 
