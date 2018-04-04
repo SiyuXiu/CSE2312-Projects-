@@ -50,14 +50,12 @@ MOV R10, R0                        @ store the result in R10
 POP {R2}                           @ restore the input argument(m)
 POP {R1}                           @ restore the input argument(n)
 
-PUSH {R1}                          @ backup input argument value(n)
-PUSH {R2}                          @ backup input argument value(m)
+
 PUSH {R10}
 SUB R2, R2, #1                     @ let n=n, m=(m-1)
 BL count_partitions                @ compute count_partitions(n,m-1)
 POP {R10}
-POP {R2}                           @ restore the input argument(m)
-POP {R1}                           @ restore the input argument(n)
+
 
 ADD R10, R10, R0                   @ let R10=count_partitions(n-m,m) + count_partitions(n,m-1)
 MOV R0, R10                        @ move R10 to R0
