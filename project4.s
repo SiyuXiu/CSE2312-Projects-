@@ -1,9 +1,4 @@
-//
-//  File.s
-//  
-//
-//  Created by Siyu Xiu on 4/11/18.
-//
+
 /******************************************************************************
  * @file float_div.s
  * @brief simple example of integer division with a scalar result using the FPU
