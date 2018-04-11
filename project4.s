@@ -1,4 +1,9 @@
-
+//
+//  File.s
+//  
+//
+//  Created by Siyu Xiu on 4/11/18.
+//
 /******************************************************************************
  * @file float_div.s
  * @brief simple example of integer division with a scalar result using the FPU
@@ -7,8 +12,6 @@
  * two integer values
  *
  * @author Christopher D. McMurrough
- * Created by Siyu Xiu on 4/11/18.
- *
  ******************************************************************************/
 
 .global main
@@ -21,6 +24,7 @@ BL  _scanf              @ branch to scanf procedure with return
 
 VMOV S0, R0             @ move the numerator to floating point register
 
+BL  _prompt             @ branch to prompt procedure with return
 BL  _scanf              @ branch to scanf procedure with return
 
 VMOV S1, R1             @ move the denominator to floating point register
@@ -74,7 +78,7 @@ POP {PC}                @ return
 
 format_str:     .asciz      "%f"
 prompt_str:     .asciz      "Type a number and press enter: "
-printf_str:     .asciz      "The number entered was: %f\n"
 
-result_str:     .asciz      "Pi is approximately 22/7 = %f \n"
+
+result_str:     .asciz      "%f mod %f = %f \n"
 exit_str:       .ascii      "Terminating program.\n"
