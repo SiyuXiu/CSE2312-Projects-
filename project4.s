@@ -1,14 +1,12 @@
-
 /******************************************************************************
- * @file float_div.s
+ * @file float_div.s author Christopher D. McMurrough
  * @brief simple example of integer division with a scalar result using the FPU
  *
- * Simple example of using the ARM FPU to compute the division result of
- * two integer values
- *
- * @author Christopher D. McMurrough
+ * a simple integer division calculator that will compute the floating point 
+ * result of the division of two integers n and d
+ * Student Name: Siyu Xiu
+ * Student ID: 1001394663
  ******************************************************************************/
-
 .global main
 .func main
 
@@ -16,33 +14,24 @@ main:
 
 BL  _prompt             @ branch to prompt procedure with return
 BL  _scanf              @ branch to scanf procedure with return
-
+MOV R8,R0
 VMOV S0, R0             @ move the numerator to floating point register
+VCVT.F64.F32 D1, S0     @ covert the result to double precision for printing
 
 BL  _prompt             @ branch to prompt procedure with return
 BL  _scanf              @ branch to scanf procedure with return
+MOV R9,R0
+VMOV S1, R0             @ move the denominator to floating point register
+VCVT.F64.F32 D2, S1     @ covert the result to double precision for printing
+VDIV.F64 D3, D1, D2     @ compute D3 = D1 / D2
 
-VMOV S1, R1             @ move the denominator to floating point register
+LDR R0,=result_str      @ R0 contains formatted string address
+MOV R1,R8               @ move R8 (integer n)to R1
+MOV R2,R9               @ move R9 (integer d)to R2
+VPUSH {D3}              @ push D3 onto stack
+BL printf               @ print the result
 
-VCVT.F32.U32 S0, S0     @ convert unsigned bit representation to single float
-VCVT.F32.U32 S1, S1     @ convert unsigned bit representation to single float
-
-VDIV.F32 S2, S0, S1     @ compute S2 = S0 * S1
-
-VCVT.F64.F32 D4, S2     @ covert the result to double precision for printing
-VMOV R1, R2, D4         @ split the double VFP register into two ARM registers
-BL  _printf_result      @ print the result
-
-B   _exit               @ branch to exit procedure with no return
-
-_exit:
-MOV R7, #4              @ write syscall, 4
-MOV R0, #1              @ output stream to monitor, 1
-MOV R2, #21             @ print string length
-LDR R1, =exit_str       @ string at label exit_str:
-SWI 0                   @ execute syscall
-MOV R7, #1              @ terminate syscall, 1
-SWI 0                   @ execute syscall
+B main                  @ loop
 
 _prompt:
 MOV R7, #4              @ write syscall, 4
@@ -51,12 +40,6 @@ MOV R2, #31             @ print string length
 LDR R1, =prompt_str     @ string at label prompt_str:
 SWI 0                   @ execute syscall
 MOV PC, LR              @ return
-
-_printf_result:
-PUSH {LR}               @ push LR to stack
-LDR R0, =result_str     @ R0 contains formatted string address
-BL printf               @ call printf
-POP {PC}                @ pop LR from stack and return
 
 _scanf:
 PUSH {LR}               @ store LR since scanf call overwrites
@@ -71,9 +54,7 @@ POP {PC}                @ return
 
 .data
 
-format_str:     .asciz      "%f"
+format_str:     .asciz      "%d"
 prompt_str:     .asciz      "Type a number and press enter: "
+result_str:     .asciz      "%d / %d= %f \n"
 
-
-result_str:     .asciz      "%f mod %f = %f \n"
-exit_str:       .ascii      "Terminating program.\n"
