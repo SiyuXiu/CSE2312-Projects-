@@ -61,7 +61,7 @@ PUSH {R2}               @ backup register before printf
 MOV R2, R1              @ move array value to R2 for printf
 MOV R1, R0              @ move array index to R1 for printf
 CMP R10,R2
-BLEQ _printf
+BLEQ _getresult
 POP {R2}                @ restore register
 POP {R1}                @ restore register
 POP {R0}                @ restore register
@@ -71,6 +71,12 @@ B   readloop            @ branch to next loop iteration
 searchdone:
 BL _nonresult
 BL _exit
+
+_getresult:
+PUSH {LR}               @ store the return address
+LDR R0, =printf_str     @ R0 contains formatted string address
+BL printf               @ call printf
+POP {PC}                @ restore the stack pointer and return
 
 
 _prompt:
@@ -128,7 +134,7 @@ a:              .skip       40
 format_str:     .asciz      "%d"
 prompt_str:     .ascii      "ENTER A SEARCH VALUE:"
 printf_str:     .asciz      "a[%d] = %d\n"
-nonresult_str
+
 start_str:      .ascii      "Enter 10 positive integers, each followed by ENTER:\n"
 nonresult_str:    .ascii     "That value does not exist in the array!\n"
-
+exit_str:       .ascii      "Terminating program.\n"
