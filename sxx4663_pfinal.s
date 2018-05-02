@@ -3,7 +3,7 @@
 
 
 main:
-
+BL _start
 MOV R0, #0                    @ initialze index
 
 writeloop:
@@ -44,13 +44,48 @@ ADD R0, R0, #1          @ increment index
 B   readloop            @ branch to next loop iteration
 
 readdone:
-B _prompt                 @ branch to printf procedure with return
+BL _prompt                 @ branch to printf procedure with return
+BL _scanf
+
+search:
+MOV R10,R0
+CMP R0, #10           @ check to see if we are done iterating
+BEQ searchdone            @ exit loop if done
+LDR R1, =a              @ get address of a
+LSL R2, R0, #2          @ multiply index*4 to get array offset
+ADD R2, R1, R2          @ R2 now has the element address
+LDR R1, [R2]            @ read the array at address
+PUSH {R0}               @ backup register before printf
+PUSH {R1}               @ backup register before printf
+PUSH {R2}               @ backup register before printf
+MOV R2, R1              @ move array value to R2 for printf
+MOV R1, R0              @ move array index to R1 for printf
+CMP R10,R2
+BLEQ _printf
+POP {R2}                @ restore register
+POP {R1}                @ restore register
+POP {R0}                @ restore register
+ADD R0, R0, #1          @ increment index
+B   readloop            @ branch to next loop iteration
+
+searchdone:
+BL _nonresult
+BL _exit
+
 
 _prompt:
 MOV R7, #4              @ write syscall, 4
 MOV R0, #1              @ output stream to monitor, 1
 MOV R2, #21             @ print string length
 LDR R1, =prompt_str     @ string at label prompt_str:
+SWI 0                   @ execute syscall
+MOV PC, LR              @ return
+
+_nonresult:
+MOV R7, #4              @ write syscall, 4
+MOV R0, #1              @ output stream to monitor, 1
+MOV R2, #40            @ print string length
+LDR R1, =nonresult_str     @ string at label prompt_str:
 SWI 0                   @ execute syscall
 MOV PC, LR              @ return
 
@@ -93,5 +128,7 @@ a:              .skip       40
 format_str:     .asciz      "%d"
 prompt_str:     .ascii      "ENTER A SEARCH VALUE:"
 printf_str:     .asciz      "a[%d] = %d\n"
-exit_str:       .ascii      "Terminating program.\n"
+nonresult_str
 start_str:      .ascii      "Enter 10 positive integers, each followed by ENTER:\n"
+nonresult_str:    .ascii     "That value does not exist in the array!\n"
+
