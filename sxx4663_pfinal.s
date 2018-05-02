@@ -3,8 +3,7 @@
 
 
 main:
-LDR R10, =start_message         @ load addr of prompt string for impending printf call
-BL printf
+
 MOV R0, #0                    @ initialze index
 
 writeloop:
@@ -45,7 +44,23 @@ ADD R0, R0, #1          @ increment index
 B   readloop            @ branch to next loop iteration
 
 readdone:
-B _exit                 @ exit if done
+B _prompt                 @ branch to printf procedure with return
+
+_prompt:
+MOV R7, #4              @ write syscall, 4
+MOV R0, #1              @ output stream to monitor, 1
+MOV R2, #21             @ print string length
+LDR R1, =prompt_str     @ string at label prompt_str:
+SWI 0                   @ execute syscall
+MOV PC, LR              @ return
+
+_start:
+MOV R7, #4              @ write syscall, 4
+MOV R0, #1              @ output stream to monitor, 1
+MOV R2, #52             @ print string length
+LDR R1, =start_str     @ string at label prompt_str:
+SWI 0                   @ execute syscall
+MOV PC, LR              @ return
 
 _scanf:
 PUSH {LR}                @ store LR since scanf call overwrites
@@ -76,6 +91,7 @@ SWI 0                   @ execute syscall
 .data
 a:              .skip       40
 format_str:     .asciz      "%d"
-start_message:             .asciz      "Enter 10 positive integers, each followed by ENTER:\n"
+prompt_str:     .ascii      "ENTER A SEARCH VALUE:"
 printf_str:     .asciz      "a[%d] = %d\n"
 exit_str:       .ascii      "Terminating program.\n"
+start_str:      .ascii      "Enter 10 positive integers, each followed by ENTER:\n"
